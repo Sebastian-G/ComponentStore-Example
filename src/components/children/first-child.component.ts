@@ -22,7 +22,7 @@ export class FirstChildComponent {
 
   onAddMovieClicked() {
     this.exampleCounter.update((i) => i + 1);
-    this.overviewFacade.addMovie({
+    this.overviewFacade.addMovieAndLoadImage({
       title: 'Just a Movie',
       id: this.exampleCounter().toString(),
     } as Movie);

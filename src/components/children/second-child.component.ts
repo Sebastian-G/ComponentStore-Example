@@ -9,7 +9,10 @@ import { useOverviewStore } from '../store/overview.token';
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-  <pre>{{ overviewFacade.movies$ | async | json}}</pre>
+  <div *ngFor="let movie of overviewFacade.moviesReverseSorted$ | async">
+    <h4>{{movie.title}} ({{movie.id}})</h4>
+    <img [src]="movie.url" [alt]="movie.title" [ngStyle]="{ maxHeight: '100px'}" />
+  </div>
   `,
 })
 export class SecondChildComponent {

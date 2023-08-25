@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ComponentStore } from '@ngrx/component-store';
+import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { getDefaultOverviewState } from './overview.state';
 import type { OverviewState } from './overview.state';
 import { Movie } from '../models/movie.model';
-import { shareReplay } from 'rxjs';
+import { Observable, shareReplay, switchMap } from 'rxjs';
+import { MovieService } from '../sevices/movie.service';
 
 @Injectable()
 export class OverviewStore extends ComponentStore<OverviewState> {
@@ -12,12 +13,30 @@ export class OverviewStore extends ComponentStore<OverviewState> {
     this.movies$,
     (movies) => movies.length
   ).pipe(shareReplay());
-  public readonly addMovie = this.updater((s: OverviewState, movie: Movie) => ({
-    ...s,
-    movies: [...s.movies, movie],
-  }));
+  public readonly moviesReverseSorted$ = this.select(this.movies$, (movies) =>
+    movies.reverse()
+  ).pipe(shareReplay());
+  private readonly addMovie = this.updater(
+    (s: OverviewState, movie: Movie) => ({
+      ...s,
+      movies: [...s.movies, movie],
+    })
+  );
 
-  constructor() {
+  public readonly addMovieAndLoadImage = this.effect(
+    (movie$: Observable<Movie>) =>
+      movie$.pipe(
+        switchMap((movie) => this.movieService.getImageForMovie(movie)),
+        tapResponse(
+          (movie: Movie) => {
+            this.addMovie(movie);
+          },
+          (e: string) => console.debug('ERROR occured but was handled: ', e)
+        )
+      )
+  );
+
+  constructor(private readonly movieService: MovieService) {
     // set initial values
     super(getDefaultOverviewState());
   }

@@ -9,3 +9,8 @@ export type OverviewFacade<C extends object = any> = Omit<
 
 export const useOverviewStore = <C extends object = any>() =>
   inject(OverviewStore) as OverviewFacade<C>;
+
+export const getOverviewStateStream = () =>
+  inject(OverviewStore).select((s) => s);
+
+export const getOverviewStateSnapshot = () => inject(OverviewStore).state;
