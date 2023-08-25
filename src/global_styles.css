@@ -1,0 +1,42 @@
+/* Add application styles & imports to this file! */
+
+my-app {
+  display: block;
+  border: red solid 1px;
+  padding: 1rem;
+}
+my-app::before {
+  content: 'No stores contained!';
+  font-size: 0.75rem;
+}
+
+app-overview {
+  display: block;
+  background-color: lightgreen;
+  border: green solid 1px;
+  padding: 1rem;
+}
+app-overview::before {
+  content: 'Provided Component-Store';
+  font-size: 0.75rem;
+}
+
+app-first-child {
+  display: block;
+  border: blue solid 1px;
+  padding: 1rem;
+}
+app-first-child::before {
+  content: 'Consumes Component-Store';
+  font-size: 0.75rem;
+}
+
+app-second-child {
+  display: block;
+  border: blue solid 1px;
+  padding: 1rem;
+}
+app-second-child::before {
+  content: 'Consumes Component-Store';
+  font-size: 0.75rem;
+}
